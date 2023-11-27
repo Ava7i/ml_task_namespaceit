@@ -17,7 +17,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">System design of The Project</a>
+      <a href="#about-the-project">Overview</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -41,7 +41,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## System design of  The Project
+# Overview
 
 
 
