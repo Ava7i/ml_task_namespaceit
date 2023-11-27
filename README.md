@@ -9,9 +9,6 @@
 
 ### proposed Architecture:
 
-![](https://github.com/anchorblock/ACT_BOT/blob/main/image/ACT.png)
-
-
 
 
 
@@ -49,11 +46,18 @@
 
 
 #### Introduction: 
-The proposed system is a chatbot that can understand and respond to user input in natural language, and extract intents and entities from the input to provide relevant and personalized responses. The system will be built using the Rasa framework, which provides a powerful and flexible platform for building conversational AI applications.
+This repository contains a Python-based implementation for detecting koalas in images and videos using YOLOv8, a state-of-the-art object detection algorithm.
+This project focuses on leveraging the power of YOLOv8, a real-time object detection system, to identify and localize koalas within images and videos. The repository provides:
+
+- Pre-trained weights for the YOLOv8 model specifically trained to detect koalas.
+- Python scripts and Jupyter notebooks for:
+- Koala detection in images.
+- Training the YOLOv8 model on custom koala datasets.
 
 
 #### Requirements and constraints:
-The system should be able to process and analyze user input in real-time, with a response time of less than 1 second. The system should also be able to handle a wide range of intents and entities, and provide accurate and relevant results. The system should be scalable, reliable, and secure, and should be able to integrate with other systems and platforms.
+- pthon = 3.10.0
+- 
 
 
 #### Architecture and components: 
