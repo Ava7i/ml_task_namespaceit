@@ -1,6 +1,7 @@
 
 # Final  Dataset
-# Overview
+
+## Overview
 This dataset is curated for task purposes, specifically focusing on the classification of Koala images. Koalas are fascinating and unique marsupials native to Australia, known for their distinctive appearance and arboreal lifestyle.
 
 # Dataset Composition
