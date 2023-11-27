@@ -57,43 +57,171 @@ This project focuses on leveraging the power of YOLOv8, a real-time object detec
 
 #### Requirements and constraints:
 - pthon = 3.10.0
-- 
-
+- Roboflow
+- ultralytics
 
 #### Architecture and components: 
 The proposed system will have the following architecture and components:
 
-Rasa NLU: This component will provide natural language understanding capabilities, such as intent classification and entity extraction, using deep learning models and advanced algorithms.
-Rasa Core: This component will provide dialogue management and flow control, such as managing conversation contexts and defining dialogue rules and responses.
+##### Raw Data:
+The given dataset has 165 Jpeg files. The given dataset also contains
+- .au
+- .com
+- .org
+and so on Files.
+In details: data/Raw_data/Raw_data/md
+  
+#### Preprocessing: Preprocessing steps
+- Clean data: First I remove the .au,.com files and store only jpeg files.
+- Normalization: Resize Image
+- Augmentation: Brightness,hue and so on
+- Preprocess with Roboflow:
+- Final Dataset
+#### Model
+YOLOv8 is a new state-of-the-art computer vision model built by Ultralytics, the creators of YOLOv5. The YOLOv8 model contains out-of-the-box support for object detection, classification, and segmentation tasks, accessible through a Python package as well as a command line interface.
+
+| Features |  YOLOv5	| YOLOv7	 | YOLOv8	  | Comments |
+|----------|----------|----------|----------|----------|
+|Accuracy   | mAP@0.5: 50.7%    |mAP@0.5: 56.1%   | mAP@0.5: 61.7%  | high mAP  |
+| FPS    | 40    | 60   | 80     | High speed      |
+| Model Size(Mb)  | 24.2    | 23.2     | 22.9     | Less Memory      |
+
+
+#### Architectural Enhancements of YOLOv8
+YOLOv8 boasts several architectural enhancements that contribute to its superior performance:
+
+- Backbone: Utilizes the CSPDarknet53 backbone, known for its efficient balance of accuracy and speed.
+
+- Neck: Employs the Spatial Attention Module (SAM) and Path Aggregation Network (PANet) for enhanced feature fusion.
+
+- Head: Leverages the YOLO head with Focal Loss and Weighted-BCE Loss for improved classification and localization.
+
+- Data Augmentation: Introduces the Hide-and-Seek augmentation technique for further data enhancement.
 
 
 
-#### Features and capabilities: 
-The proposed system will have the following features and capabilities:
+# Fine -Tuining
+After download the pre trained yolo model I fine tune the model on given dataset.
+For fine-tuining, I tested 4 different expriements
+### Expriement1
 
-#### Natural language understanding: 
-The system will be able to understand user input in natural language, and extract int
+```
+!yolo task=detect mode=train model=yolov8s.pt data={dataset.location}/data.yaml epochs=25 imgsz=100 plots=True
+batch: 8
+Optimizer : SGD # other choices=['SGD', 'Adam', 'AdamW', 'RMSProp']
+lr0: 0.01
+```
 
-![](https://github.com/anchorblock/ACT_BOT/blob/main/image/Screenshot%20from%202023-01-30%2017-13-05.png)
+### Result 
+- Speed: 0.1ms pre-process
+- 1.0ms inference
+- 0.0ms loss
+-  1.0ms post-process per image
+  
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Expriements/Expriement1/train/results%20(1).png)
 
-![](https://github.com/anchorblock/ACT_BOT/blob/main/image/Screenshot%20from%202023-01-30%2017-13-05.png)
+### Expriement2
+- Adding seed
+- Increased number of epochs
+- Increased number of batch sizes
+
+```
+%cd {HOME}
+
+!yolo task=detect mode=train model=yolov8s.pt data={dataset.location}/data.yaml epochs=50 imgsz=64 plots=True
+seed: 1000
+batch: 12
+lr0: 0.01
+```
+
+### Result 
+- Speed: 0.1ms pre-process
+- 1.3ms inference
+- 0.0ms loss
+-  1.5ms post-process per image
+
+### Confusion Matrix of Expriement 2
+  
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Expriements/Expriement2/train/confusion_matrix%20(2).png)
 
 
-![](https://github.com/anchorblock/ACT_BOT/blob/main/image/Screenshot%20from%202023-01-30%2017-13-26.png)
+### Expriement3
+- Decreasing epochs size
+- Add one more parameter verbose
+- Seed remaining same
+- Increasing Batch sizes
+```
+!yolo task=detect mode=train model=yolov8s.pt data={dataset.location}/data.yaml epochs=30 imgsz=100 plots=True
+verbose = True
+seed: 1000
+batch: 32
+lr0: 0.01
+     
+```
 
-![](https://github.com/anchorblock/ACT_BOT/blob/main/image/Screenshot%20from%202023-01-30%2017-25-50.png)
+### Result 
+- Speed: 0.1ms pre-process
+- 1.0ms inference
+- 0.0ms loss
+-  1.0ms post-process per image
 
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+## Prediction of Expriement 3
+  
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Expriements/Expriement3/train/val_batch0_pred%20(4).jpg)
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
-Use the `BLANK_README.md` to get started.
+### Expriement4
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- Increasing epoch sizes
+
+```
+
+!yolo task=detect mode=train model=yolov8s.pt data={dataset.location}/data.yaml epochs=100 imgsz=100
+
+
+```
+
+### Result 
+- Speed: 0.1ms pre-process
+- 1.3ms inference
+- 0.0ms loss
+-  1.2ms post-process per image
+- 100 epochs completed in 0.301 hours.
+  
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Expriements/Expriement4/train/R_curve%20(4).png)
+
+
+# Comparison 
+Above 4 expriments, now I have 4 models but lets compare models performance:
+
+
+| Model | Precision | Recall | mAP |  mAP50-95 |
+|----------|----------|----------|----------|----------|
+| Exp 1    |   0.851       | 0.824     |  0.831    | 0.494   |
+| Exp 2    | 0.969     | 0.882   |   0.935       |  0.494        |
+| Exp 3    | 0.986   | 0.824    |  0.88       | 0.512      |
+| Exp 4    |  0.923  | 0.824    |  0.885      | 0.505       |
+
+
+ ### From the above table I choose the Exp 3 model for the interference.
+
+### Deployment on Roboflow
+
+```
+project.version(dataset.version).deploy(model_type="yolov8", model_path=f"{HOME}/runs/detect/train3/")
+
+```
+
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Assets/Screenshot_4.png)
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Assets/Screenshot_3.png)
+![](https://github.com/Ava7i/ml_task_namespaceit/blob/main/Assets/Screenshot_2.png)
+
+### Demo Link
+https://universe.roboflow.com/nameplate/koala-ag6b3/model/1
+
+
+
 
 
 
