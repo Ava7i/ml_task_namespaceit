@@ -1,1 +1,26 @@
+# Run the roboflow Inference Service as a Docker compose service"
+services:
+  roboflow-inference-service:
+    image: roboflow/inference-server:cpu
+    ports:
+      - "8001:8001"
 
+# Optionally, add any other containers or services you need here, 
+# illustrated via this example below;
+# so you can "compose" multiple services with the roboflow inference 
+# service  as needed by your application
+
+  another-container-service:
+    image:  curlimages/curl:8.00.1
+    entrypoint:
+      - /bin/ash
+      - -c
+      - |
+        while true; do 
+        curl -s -X GET http://roboflow-inference-service:9001 
+        sleep 5; 
+        done
+      
+    depends_on:
+      - roboflow-inference-service
+  
